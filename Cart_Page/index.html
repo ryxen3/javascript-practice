@@ -24,36 +24,36 @@
     <!-- hero section -->
     <div class="container-fluid bg-secondary-subtle py-sm-5">
 
-        <!-- form -->
-        <form class="mx-auto mb-5" style="max-width: 800px;">
-            <div class="row bg-white p-2" style="border: 1px solid #000;">
+        <!-- Customer Information -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white p-2 black-border">
                 <div class="col-12 text-center fs-3 mb-3">
                     Customer Information
                 </div>
                 <div class="row mb-3">
-                    <label for="invoiceNo" class="col-sm-3" style="padding: 4px 12px;">
+                    <label for="invoiceNo" class="col-sm-3">
                         Invoice No:
                     </label>
-                    <input type="number" id="invoiceNo" class="col-sm-9" style="padding: 4px 12px;">
+                    <input type="number" id="invoiceNo" class="col-sm-8 form-input">
                 </div>
                 <div class="row mb-3">
                     <label for="customerName" class="col-sm-3">
                         Customer Name:
                     </label>
-                    <input type="text" id="customerName" class="col-sm-9" style="padding: 4px 12px;">
+                    <input type="text" id="customerName" class="col-sm-8 form-input">
                 </div>
                 <div class="row mb-3">
                     <label for="phoneNo" class="col-sm-3">
                         Phone No:
                     </label>
-                    <input type="tel" id="phoneNo" class="col-sm-9" style="padding: 4px 12px;">
+                    <input type="tel" id="phoneNo" class="col-sm-8 form-input">
                 </div>
                 <div class="row mb-3">
                     <label for="addressName" class="col-sm-3">
                         Address:
                     </label>
-                    <div class="col-sm-9 p-0">
-                        <textarea id="addressName" rows="2" class="w-100" style="padding: 4px 12px;"></textarea>
+                    <div class="col-sm-8 p-0">
+                        <textarea id="addressName" rows="2" class="w-100 form-input"></textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -98,11 +98,92 @@
                         </select>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+
+
+        <!-- Product Cart -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white p-2 black-border">
+                <div class="d-flex pt-2">
+                    <div class="fs-5">
+                        Products:
+                    </div>
+                    <div class="ms-auto">
+                        <button id="addItemBtn" type="button" class="btn btn-success">
+                            Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <div id="productContainer">
+                    <!-- product item -->
+                    <div class="product-item m-3 black-border">
+                        <div class="d-flex p-2">
+                            <div class="ms-auto">
+                                <button class="btn btn-danger d-none">
+                                    <i class="bi bi-x fs-6"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Name:
+                            </label>
+                            <input type="Text" class="col-sm-8 product-name">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Rate:
+                            </label>
+                            <input type="number" class="col-sm-8 product-rate">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Quantity:
+                            </label>
+                            <input type="number" class="col-sm-8 product-quantity">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Total:
+                            </label>
+                            <input readonly class="col-sm-8 product-total">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- invoice -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white black-border">
+                <div class="invoice-item py-3">
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Sub total:
+                        </label>
+                        <input readonly class="col-sm-8 invoice-sub-total">
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Discount (%):
+                        </label>
+                        <input type="number" id="discountPercentage" class="col-sm-8">
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Total:
+                        </label>
+                        <input readonly class="col-sm-8">
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- submit section -->
-        <div class="mx-auto bg-light" style="max-width: 400px; border: 1px solid #000">
-            <div class="fs-3 d-flex justify-content-center fw-semibold py-3">
+        <div class="mx-auto bg-light submit-width">
+            <div class="fs-3 d-flex justify-content-center fw-semibold py-2">
                 Are You Ready?
             </div>
             <div class="d-flex justify-content-center pb-3">
@@ -111,10 +192,11 @@
         </div>
     </div>
 
-    <!-- customer information display section -->
-    <div id="customerDisplayContainer" class="container py-5" style="display: none;">
-        <div id="customerInformation" class="col-12 col-sm-6"
-            style="border: 2px solid #000; padding: 20px; background-color: white;">
+    <!-- customer & invoice information display section -->
+    <div id="DisplayContainer" class="container py-5 d-none">
+        <div class="row">
+            <div id="customerInformation" class="col-12 col-sm-6 p-5 black-border bg-white"></div>
+            <div id="invoiceInformation" class="col-12 col-sm-6 p-5 black-border bg-white"></div>
         </div>
     </div>
 

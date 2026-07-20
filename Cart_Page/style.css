@@ -1,0 +1,32 @@
+/* Main Sections */
+.section-width {
+    max-width: 800px;
+}
+
+.submit-width {
+    max-width: 400px;
+}
+
+/* Borders */
+.black-border {
+    border: 1px solid #000;
+}
+
+.black-border-thick {
+    border: 2px solid #000;
+}
+
+/* Form Inputs */
+.form-input {
+    padding: 4px 12px;
+}
+
+.text-area {
+    width: 100%;
+    padding: 4px 12px;
+}
+
+/* Hide Display Initially */
+.display-hidden {
+    display: none;
+}
