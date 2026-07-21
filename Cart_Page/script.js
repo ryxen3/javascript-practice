@@ -203,6 +203,12 @@ submitBtn.addEventListener('click', (event) => {
         return;
     }
 
+    const phoneInput = document.getElementById('phoneNo');
+    if(!phoneInput.validity.valid) {
+        alert("Please enter a valid Phone number");
+        return;
+    }
+
     //HTML display
     DisplayContainer.style.display = 'block';
 
