@@ -184,8 +184,8 @@ submitBtn.addEventListener('click', (event) => {
     const phoneNo = document.getElementById('phoneNo').value;
     const address = document.getElementById('addressName').value;
     const radioIsChecked = document.querySelector('input[name="paymentCheck"]:checked');
-    const paymentMethod = radioIsChecked?radioIsChecked.value:'None';
-    const countryLocation = document.getElementById('selectLocation').value;
+    const paymentMethod = radioIsChecked ? radioIsChecked.value : 'Blank';
+    const countryLocation = document.getElementById('selectLocation').value || 'Blank';
 
     // invoice info
     const invoiceSubTotal = invoiceSubTotalInput.value; 
