@@ -3,11 +3,11 @@ const DisplayContainer = document.getElementById('DisplayContainer');
 const customerInformation = document.getElementById('customerInformation');
 const invoiceInformation = document.getElementById('invoiceInformation');
 
-// product element handling
+// get product element
 const addBtn = document.getElementById("addItemBtn");
 const productContainer = document.getElementById("productContainer");
 
-//invoice element handling
+//get invoice element 
 const invoiceSubTotalInput = document.querySelector('.invoice-sub-total');
 const discountInput = document.getElementById('discountPercentage');
 const invoiceTotalInput = document.querySelector('.invoice-total');
@@ -123,6 +123,16 @@ productContainer.addEventListener('input', (event) => {
         let rate = parseFloat(rateInput.value);
         let quantity = parseFloat(quantityInput.value);
 
+        // valid input gets taken
+        if (rate < 0) {
+            rate = 0;
+            rateInput.value = '';
+        }
+        if (quantity < 0) {
+            quantity = 0;
+            quantityInput.value = '';
+        }
+
         if (!rate) {
             rate = 0;
         }
@@ -203,6 +213,7 @@ submitBtn.addEventListener('click', (event) => {
         return;
     }
 
+    // validating phone No.
     const phoneInput = document.getElementById('phoneNo');
     if(!phoneInput.validity.valid) {
         alert("Please enter a valid Phone number");
