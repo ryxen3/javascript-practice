@@ -1,135 +1,338 @@
-//Get the display element from HTML
-const display = document.getElementById("calculator-display");
+// html display block elements for customer & invoice information
+const DisplayContainer = document.getElementById('DisplayContainer');
+const customerInformation = document.getElementById('customerInformation');
+const invoiceInformation = document.getElementById('invoiceInformation');
 
-// decimal numbers
-const btn0 = document.getElementById("btn-0");
-const btn1 = document.getElementById("btn-1");
-const btn2 = document.getElementById("btn-2");
-const btn3 = document.getElementById("btn-3");
-const btn4 = document.getElementById("btn-4");
-const btn5 = document.getElementById("btn-5");
-const btn6 = document.getElementById("btn-6");
-const btn7 = document.getElementById("btn-7");
-const btn8 = document.getElementById("btn-8");
-const btn9 = document.getElementById("btn-9");
-const btnDot = document.getElementById("btn-dot");
+// get product element
+const addBtn = document.getElementById("addItemBtn");
+const productContainer = document.getElementById("productContainer");
 
-// clear
-const btnAC = document.getElementById("btn-ac");
-const btnBackspace = document.getElementById("btn-backspace");
+//get invoice element 
+const invoiceSubTotalInput = document.querySelector('.invoice-sub-total');
+const discountInput = document.getElementById('discountPercentage');
+const invoiceTotalInput = document.querySelector('.invoice-total');
+const productTableBody = document.getElementById('productTableBody');
 
-// operators
-const btnPlus = document.getElementById("btn-plus");
-const btnMinus = document.getElementById("btn-minus");
-const btnMultiply = document.getElementById("btn-multiply");
-const btnDivide = document.getElementById("btn-divide");
-const btnPercent = document.getElementById("btn-percent");
-const btnEqual = document.getElementById("btn-equal");
+// submit button element
+const submitBtn = document.getElementById('submitBtn');
 
-let currentNumber = "";     // The first number that gets in the display screen
-let isNewNumber = false;    // A boolean flag to detect we are inputing a new number or not 
+// calculate sub-total price of every product
+const calculateSubTotal = () => {
 
-// Store previous number and take current number and show it to display
-const inputNumber = (nextNumber) => {
+    // Get total prices of all products
+    const totals = productContainer.querySelectorAll('.product-total');
 
-    // if input is a dot and there's a previous dot in the string then skip it's input
-    if(nextNumber==="." && currentNumber.includes(".")){
-        return;
-    }
-    // refreshes if an operator was clicked last input
-    if(isNewNumber===true){ // operator is last input
-        currentNumber = nextNumber;
-        isNewNumber=false;
-    }
-    else if(currentNumber==="0"){   //no 0 before input (Note: This is causing "0.something" input to be displayed as ".something" . That's not a bug that's a feature. Please let it slide.)
-        currentNumber = nextNumber; 
-    } else {
-        currentNumber += nextNumber;    //get all number inputs in a string
-    }
-    display.innerText = currentNumber;  //display the string text
+    let subTotal = 0;
 
-    display.style.color = "#fff"; // Make display font white
+    // add all total prices into sub-total
+    totals.forEach((input) => {
+        subTotal += parseFloat(input.value) || 0;
+    });
+
+    // display sub-total value
+    invoiceSubTotalInput.value = subTotal.toFixed(2);
+
+    // calculate invoice total value as soon as sub total calculation is finished
+    calculateTotal();
 };
 
-let lastResult = 0;
-let lastOperator = "";
+// calculate total price of every product
+const calculateTotal = () => {
 
-// handle operator input
-const inputOperator = (operator) => {
-    lastResult = parseFloat(currentNumber); // Float it so that we can break it to decimals
-    lastOperator = operator; // store input operator
-    isNewNumber = true; // flag switch so that new umber refreshes  
-}
+    // get subtotal and discounts
+    const subTotal = parseFloat(invoiceSubTotalInput.value) || 0;
+    const discount = parseFloat(discountInput.value) || 0;
 
-const clearAll = () => {
-    currentNumber = "";
-    isNewNumber = false;
-    lastResult = 0;
-    lastOperator = "";
-    display.innerText = currentNumber;
+    // Calculate invoice total value
+    let total = subTotal - (subTotal * discount / 100);
+
+    // display invoice total value
+    invoiceTotalInput.value = total.toFixed(2);
 };
 
-const backspace = () => {
-    currentNumber = currentNumber.slice(0,-1);
-    display.innerText = currentNumber;
-}
+const hideDisplay = () => {
+    DisplayContainer.style.display = 'none';
+};
 
-// Number buttons click action
-btn0.addEventListener("click", () => { inputNumber("0"); });
-btn1.addEventListener("click", () => { inputNumber("1"); });
-btn2.addEventListener("click", () => { inputNumber("2"); });
-btn3.addEventListener("click", () => { inputNumber("3"); });
-btn4.addEventListener("click", () => { inputNumber("4"); });
-btn5.addEventListener("click", () => { inputNumber("5"); });
-btn6.addEventListener("click", () => { inputNumber("6"); });
-btn7.addEventListener("click", () => { inputNumber("7"); });
-btn8.addEventListener("click", () => { inputNumber("8"); });
-btn9.addEventListener("click", () => { inputNumber("9"); });
-btnDot.addEventListener("click", () => { inputNumber("."); });
+// add items in the product cart
+addBtn.addEventListener("click", () => {
 
-// Operator buttons click action
-btnPlus.addEventListener("click", () => { inputOperator("+"); });
-btnMinus.addEventListener("click", () => { inputOperator("-"); });
-btnMultiply.addEventListener("click", () => { inputOperator("*"); });
-btnDivide.addEventListener("click", () => { inputOperator("/"); });
-btnPercent.addEventListener("click", () => { inputOperator("%"); });
+    // keep adding products in the last child
+    productContainer.insertAdjacentHTML('beforeend',
+                        `<div class="product-item m-3" style="border: 1px solid #000;">
+                            <div class="d-flex p-2">
+                                <div class="ms-auto">
+                                    <button class="btn btn-danger remove-item-btn">
+                                        <i class="bi bi-x fs-6"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mb-3 px-3">
+                                <label class="col-sm-3">
+                                    Name:
+                                </label>
+                                <input type="Text" class="col-sm-8 product-name">
+                            </div>
+                            <div class="row mb-3 px-3">
+                                <label class="col-sm-3">
+                                    Rate:
+                                </label>
+                                <input type="number" class="col-sm-8 product-rate">
+                            </div>
+                            <div class="row mb-3 px-3">
+                                <label class="col-sm-3">
+                                    Quantity:
+                                </label>
+                                <input type="number" class="col-sm-8 product-quantity">
+                            </div>
+                            <div class="row mb-3 px-3">
+                                <label class="col-sm-3">
+                                    Total:
+                                </label>
+                                <input readonly class="col-sm-8 product-total">
+                            </div>
+                        </div>`
+    );
 
-// clear button click action
-btnAC.addEventListener("click", () => {
-    clearAll(); 
+    //hides HTML display if any item is added
+    hideDisplay();
+    
 });
 
-//backspace button 
-btnBackspace.addEventListener("click", () =>{
-    backspace();
+// Total price of product calculation display
+productContainer.addEventListener('input', (event) => {
+
+    // find out which input the user just typed in
+    const isRateInput = event.target.classList.contains('product-rate');
+    const isQuantityInput = event.target.classList.contains('product-quantity');
+    const isNameInput = event.target.classList.contains('product-name');
+
+    // any of the user input has been turned on
+    if (isRateInput || isQuantityInput || isNameInput) {
+
+        // find the parent product box that this input belongs to
+        const productItem = event.target.closest('.product-item');
+
+        // get all four inputs inside that product box
+        const nameInput = productItem.querySelector('.product-name');
+        const rateInput = productItem.querySelector('.product-rate');
+        const quantityInput = productItem.querySelector('.product-quantity');
+        const totalInput = productItem.querySelector('.product-total');
+
+        // Make rate and quality float values
+        let rate = parseFloat(rateInput.value);
+        let quantity = parseFloat(quantityInput.value);
+
+        // valid input gets taken
+        if (rate < 0) {
+            rate = 0;
+            rateInput.value = '';
+        }
+        if (quantity < 0) {
+            quantity = 0;
+            quantityInput.value = '';
+        }
+
+        if (!rate) {
+            rate = 0;
+        }
+        if (!quantity) {
+            quantity = 0;
+        }
+
+        // only calculate a total if a product name has been typed in
+        const nameIsEmpty = nameInput.value === '';
+
+        if (nameIsEmpty) {
+            totalInput.value = '';
+        } else {
+            const total = rate * quantity;
+            totalInput.value = total.toFixed(2);
+        }
+    }
+
+    // recalculate the invoice sub-total every time something changes
+    calculateSubTotal();
+
 });
 
-btnEqual.addEventListener("click", () => {
+// remove a product item from cart
+productContainer.addEventListener('click', (event) => {
 
-    let secondNumber = parseFloat(currentNumber);
-    let result = 0;
+    // remove button to remove products
+    const removeBtn = event.target.closest('.remove-item-btn');
+    if(!removeBtn) return;
+    const row = removeBtn.closest('.product-item');
+    row.remove();
 
-    if(lastOperator==="/" && currentNumber==="0"){
-        display.innerText = "Can't Divide By Zero";
-        display.style.color = "#ff4444"
+    // update sub total values when a product gets removed
+    calculateSubTotal();
+
+    // hides HTML display if any row is removed
+    hideDisplay();
+
+});
+
+// make discount input restricted between 0 to 100
+discountInput.addEventListener('input', (event) => {
+    
+    const value = parseFloat(event.target.value);
+
+    if (value > 100) event.target.value = 100;
+    if (value < 0) event.target.value = 0;
+});
+
+// listen to discount percentage input
+discountInput.addEventListener('input', calculateTotal);
+
+// Customer information & invoice display function
+submitBtn.addEventListener('click', (event) => {
+
+    // get customer info
+    const invoiceNo = document.getElementById('invoiceNo').value;
+    const customerName = document.getElementById('customerName').value;
+    const phoneNo = document.getElementById('phoneNo').value;
+    const address = document.getElementById('addressName').value;
+    const radioIsChecked = document.querySelector('input[name="paymentCheck"]:checked');
+    const paymentMethod = radioIsChecked ? radioIsChecked.value : 'Blank';
+    const countryLocation = document.getElementById('selectLocation').value || 'Blank';
+
+    // invoice info
+    const invoiceSubTotal = invoiceSubTotalInput.value; 
+    const discountPercentage = discountInput.value;
+    const invoiceTotal = invoiceTotalInput.value;
+
+    // make customer inputs mandatory
+    if (!invoiceNo || !customerName || !phoneNo || !address) {
+        alert('Fill all the information');
+        return;
+    }
+    
+    if (invoiceNo < 1) {
+        alert('Fill with valid Invoice Number');
         return;
     }
 
-
-    if (lastOperator === "+") {
-        result = lastResult + secondNumber;
-    } else if (lastOperator === "-") {
-        result = lastResult - secondNumber;
-    } else if (lastOperator === "*") {
-        result = lastResult * secondNumber;
-    } else if (lastOperator === "/") {
-        result = lastResult / secondNumber;
-    } else if (lastOperator === "%") {      // TODO : Can't put it in btnEqual has to be immediate execution
-        result = lastResult / 100;
+    // validating phone No.
+    const phoneInput = document.getElementById('phoneNo');
+    if(!phoneInput.validity.valid) {
+        alert("Please enter a valid Phone number");
+        return;
     }
 
-    display.style.color = "#fff";
-    currentNumber = String(result);
-    display.innerText = currentNumber;
+    //HTML display
+    DisplayContainer.style.display = 'block';
+
+    //customer information HTML display
+    customerInformation.innerHTML =
+       `<div class="fs-3 fw-semibold mb-4 text-center">
+            Customer Information Details
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Invoice No:
+            </label>
+            <div class="col-sm-6">
+                ${invoiceNo}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Customer Name:
+            </label>
+            <div class="col-sm-6">
+                ${customerName}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Phone No:
+            </label>
+            <div class="col-sm-6">
+                ${phoneNo}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Address:
+            </label>
+            <div class="col-sm-6">
+                ${address}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Payment Method:
+            </label>
+            <div class="col-sm-6">
+                ${paymentMethod}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Location:
+            </label>
+            <div class="col-sm-6">
+                ${countryLocation}
+            </div>
+        </div>`;
+
+    //invoice information HTML display
+    invoiceInformation.innerHTML =
+        `<div class="fs-3 fw-semibold mb-4 text-center">
+            Invoice Details
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Sub total:
+            </label>
+            <div class="col-sm-6">
+                ${invoiceSubTotal}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Discount (%):
+            </label>
+            <div class="col-sm-6">
+                ${discountPercentage}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-6 fw-semibold">
+                Total:
+            </label>
+            <div class="col-sm-6">
+                ${invoiceTotal}
+            </div>
+        </div>`;
+
+    // clear old product rows
+    productTableBody.innerHTML = '';
+
+    // display product information 
+    productContainer.querySelectorAll('.product-item').forEach((item) => {
+
+        const name = item.querySelector('.product-name').value;
+        const rate = item.querySelector('.product-rate').value;
+        const quantity = item.querySelector('.product-quantity').value;
+        const total = item.querySelector('.product-total').value;
+
+        // skip completely empty rows
+        if (!name || !rate || !quantity) return;
+
+        // add one row per product into the table
+        productTableBody.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>${name}</td>
+                <td>${rate}</td>
+                <td>${quantity}</td>
+                <td>${total}</td>
+            </tr>
+        `);
+    });
 
 });
+
+// hides HTML display if any input is added in the DOM
+document.addEventListener('input', hideDisplay);

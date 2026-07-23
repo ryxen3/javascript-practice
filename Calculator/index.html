@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>calculator</title>
+    <title>Cart Page</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,93 +15,220 @@
 </head>
 
 <body>
-    <div class="container calculator-box mt-5">
-        <!-- Display Screen -->
+
+    <!-- header section -->
+    <div class="container-fluid bg-black text-light display-5 d-flex justify-content-center fw-semibold py-3">
+        Invoice
+    </div>
+
+    <!-- hero section -->
+    <div class="container-fluid bg-secondary-subtle py-sm-5">
+
+        <!-- Customer Information -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white p-2 black-border">
+                <div class="col-12 text-center fs-3 mb-3">
+                    Customer Information
+                </div>
+
+                <!-- customer information rows -->
+                <div class="row mb-3">
+                    <label for="invoiceNo" class="col-sm-3">
+                        Invoice No:
+                    </label>
+                    <input type="number" id="invoiceNo" class="col-sm-8 form-input">
+                </div>
+                <div class="row mb-3">
+                    <label for="customerName" class="col-sm-3">
+                        Customer Name:
+                    </label>
+                    <input type="text" id="customerName" class="col-sm-8 form-input">
+                </div>
+                <div class="row mb-3">
+                    <label for="phoneNo" class="col-sm-3">
+                        Phone No:
+                    </label>
+                    <input type="tel" id="phoneNo" class="col-sm-8 form-input" pattern=[0-9]{11} required>
+                </div>
+                <div class="row mb-3">
+                    <label for="addressName" class="col-sm-3">
+                        Address:
+                    </label>
+                    <div class="col-sm-8 p-0">
+                        <textarea id="addressName" rows="2" class="w-100 form-input"></textarea>
+                    </div>
+                </div>
+
+                <!-- payment method -->
+                <div class="row">
+                    <div class="col-sm-6 mb-5">
+                        <span class="fw-semibold d-block pb-2">
+                            Select payment Method:
+                        </span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentCheck" id="paymentVisa"
+                                value="VISA">
+                            <label class="form-check-label" for="paymentVisa">
+                                VISA
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentCheck" id="paymentMasterCard"
+                                value="MasterCard">
+                            <label class="form-check-label" for="paymentMasterCard">
+                                Master Card
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentCheck" id="paymentCash"
+                                value="Cash">
+                            <label class="form-check-label" for="paymentCash">
+                                Cash
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-sm-6">
+                        <span class="fw-semibold d-block pb-2">
+                            Location (Country):
+                        </span>
+                        <select id="selectLocation">
+                            <option disabled selected class="display-hidden"></option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Australia">Australia</option>
+                            <option value="France">France</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Spain">Spain</option>
+                            <option value="England">England</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <!-- Product section -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white p-2 black-border">
+
+                <!-- product header -->
+                <div class="d-flex pt-2">
+                    <div class="fs-5">
+                        Products:
+                    </div>
+                    <div class="ms-auto">
+                        <button id="addItemBtn" type="button" class="btn btn-success">
+                            Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- product item cart -->
+                <div id="productContainer">
+
+                    <!-- product item -->
+                    <div class="product-item m-3 black-border">
+                        <div class="d-flex p-2">
+                            <div class="ms-auto">
+                                <button class="btn btn-danger display-hidden">
+                                    <i class="bi bi-x fs-6"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Name:
+                            </label>
+                            <input type="Text" class="col-sm-8 product-name">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Rate:
+                            </label>
+                            <input type="number" class="col-sm-8 product-rate">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Quantity:
+                            </label>
+                            <input type="number" class="col-sm-8 product-quantity">
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <label class="col-sm-3">
+                                Total:
+                            </label>
+                            <input readonly class="col-sm-8 product-total">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- invoice section -->
+        <div class="mx-auto mb-5 section-width">
+            <form class="row bg-white black-border">
+                <div class="invoice-item py-3">
+
+                    <!-- invoice rows -->
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Sub total:
+                        </label>
+                        <input readonly class="col-sm-8 invoice-sub-total">
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Discount (%):
+                        </label>
+                        <input type="number" id="discountPercentage" class="col-sm-8">
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3">
+                            Total:
+                        </label>
+                        <input readonly class="col-sm-8 invoice-total">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- submit section -->
+        <div class="mx-auto bg-light submit-width mb-4">
+            <div class="fs-3 d-flex justify-content-center fw-semibold py-2">
+                Are You Ready?
+            </div>
+            <div class="d-flex justify-content-center pb-3">
+                <input class="btn btn-primary" type="submit" value="Submit" id="submitBtn">
+            </div>
+        </div>
+    </div>
+
+    <!-- customer & invoice information display section -->
+    <div id="DisplayContainer" class="container py-5 display-hidden">
         <div class="row">
-            <div class="col-12">
-                <div class="calculator-display display-1" id="calculator-display"></div>
+            <div id="customerInformation" class="col-12 col-sm-6 p-5 black-border bg-white">
+            </div>
+            <div id="invoiceInformation" class="col-12 col-sm-6 p-5 black-border bg-white">
             </div>
         </div>
 
-        <!-- row 1-->
-        <div class="row g-2 mt-2">
-            <div class="col-3">
-                <button class="btn btn-dark-lavender calculator-btn" id="btn-ac">AC</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-bracket">( )</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-percent">%</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-divide">÷</button>
-            </div>
-        </div>
-
-        <!-- row 2-->
-        <div class="row g-2 mt-2">
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-7">7</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-8">8</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-9">9</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-multiply">x</button>
-            </div>
-        </div>
-
-        <!-- row 3− -->
-        <div class="row g-2 mt-2">
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-4">4</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-5">5</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-6">6</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-minus">-</button>
-            </div>
-        </div>
-
-        <!-- row 4-->
-        <div class="row g-2 mt-2">
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-1">1</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-2">2</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-3">3</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-navy-blue calculator-btn" id="btn-plus">+</button>
-            </div>
-        </div>
-
-        <!-- row 5-->
-        <div class="row g-2 mt-2">
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-0">0</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-backspace">
-                    <i class="bi bi-backspace"></i>
-                </button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-dark calculator-btn" id="btn-dot">.</button>
-            </div>
-            <div class="col-3">
-                <button class="btn btn btn-light-lavender calculator-btn" id="btn-equal">=</button>
+        <!-- product details table section-->
+        <div class="row mt-4">
+            <div class="col-12 p-3 black-border bg-white">
+                <div class="fs-3 fw-semibold mb-4 text-center">
+                    Product Details
+                </div>
+                <table id="productTable" class="table table-bordered text-center">
+                    <tr>
+                        <th>Name</th>
+                        <th>Rate</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                    <tbody id="productTableBody">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
